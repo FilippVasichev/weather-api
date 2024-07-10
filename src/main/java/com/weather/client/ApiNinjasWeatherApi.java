@@ -6,11 +6,11 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 
-public interface YandexWeatherApi {
-    @GET("v2/informers")
-    Call<JsonNode> getYandexWeather(
+public interface ApiNinjasWeatherApi {
+    @GET("v1/weather")
+    Call<JsonNode> getApiNinjasWeather(
             @Query("lat") double latitude,
             @Query("lon") double longitude,
-            @Header("X-Yandex-Weather-Key") String apiKey
+            @Header("X-Api-Key") String apiKey
     );
 }

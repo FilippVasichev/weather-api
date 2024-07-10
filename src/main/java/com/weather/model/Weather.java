@@ -6,4 +6,4 @@ public record Weather(
         String name,
         Integer temperature,
         Timestamp date
-        ) {}
+        ) { }

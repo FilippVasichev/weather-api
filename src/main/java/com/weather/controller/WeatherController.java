@@ -3,7 +3,10 @@ package com.weather.controller;
 
 import com.weather.model.Weather;
 import com.weather.service.WeatherService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
@@ -16,8 +19,8 @@ public class WeatherController {
         this.weatherService = weatherService;
     }
 
-    @GetMapping("/yandex")
-    public Weather getAllWeather(
+    @GetMapping
+    public final Weather getAllWeather(
             @RequestParam double lat,
             @RequestParam double lon,
             @RequestParam String apiKey

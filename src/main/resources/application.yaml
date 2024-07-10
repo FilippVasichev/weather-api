@@ -1,0 +1,45 @@
+weather:
+  countries:
+    Russia:
+      - city: Moscow
+        lat: 55.7558
+        lon: 37.6176
+      - city: Saint Petersburg
+        lat: 59.9343
+        lon: 30.3351
+      - city: Novosibirsk
+        lat: 55.0084
+        lon: 82.9357
+    Germany:
+      - city: Berlin
+        lat: 52.5200
+        lon: 13.4050
+      - city: Hamburg
+        lat: 53.5511
+        lon: 9.9937
+    China:
+      - city: Beijing
+        lat: 39.9042
+        lon: 116.4074
+      - city: Shanghai
+        lat: 31.2304
+        lon: 121.4737
+    Japan:
+      - city: Tokyo
+        lat: 35.6895
+        lon: 139.6917
+      - city: Osaka
+        lat: 34.6937
+        lon: 135.5023
+    USA:
+      - city: New York
+        lat: 40.7128
+        lon: -74.0060
+      - city: Los Angeles
+        lat: 34.0522
+        lon: -118.2437
+
+weatherApiKeys:
+  yandex: 191b308b-ee0c-4911-9cf9-d09cfb596cc8
+  apiNinjas: 56u+VueOl2xWO0OVU9DAyA==RXYkq4KsY6lgrLS1
+  openweathermap: c130627d38f0379d3a442a311630dbe6
