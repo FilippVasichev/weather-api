@@ -1,3 +1,12 @@
+spring:
+  application:
+    name: weather-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/weather-api
+    username: weather-api-postgre
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
 weather:
   countries:
     Russia:
