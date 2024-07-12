@@ -5,9 +5,21 @@ spring:
     url: jdbc:postgresql://localhost:5432/weather-api
     username: weather-api-postgre
     password: postgres
-    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
 
-weather:
+
+weather-api-settings:
+  call-intervall: 2m
+
+
+
+weather-api-keys:
+  yandex: 191b308b-ee0c-4911-9cf9-d09cfb596cc8
+  apiNinjas: 56u+VueOl2xWO0OVU9DAyA==RXYkq4KsY6lgrLS1
+  openweathermap: c130627d38f0379d3a442a311630dbe6
+
+locations:
   countries:
     Russia:
       - city: Moscow
@@ -47,8 +59,3 @@ weather:
       - city: Los Angeles
         lat: 34.0522
         lon: -118.2437
-
-weatherApiKeys:
-  yandex: 191b308b-ee0c-4911-9cf9-d09cfb596cc8
-  apiNinjas: 56u+VueOl2xWO0OVU9DAyA==RXYkq4KsY6lgrLS1
-  openweathermap: c130627d38f0379d3a442a311630dbe6

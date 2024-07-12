@@ -12,7 +12,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 @Configuration
 public class HttpClientConfig {
     @Bean
-    final YandexWeatherApi yandexWeatherClient() {
+    YandexWeatherApi yandexWeatherClient() {
         OkHttpClient httpClient = new OkHttpClient.Builder().build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.weather.yandex.ru/")
@@ -23,7 +23,7 @@ public class HttpClientConfig {
     }
 
     @Bean
-    final ApiNinjasWeatherApi apiNinjasWeatherClient() {
+    ApiNinjasWeatherApi apiNinjasWeatherClient() {
         OkHttpClient httpClient = new OkHttpClient.Builder().build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.api-ninjas.com/")
@@ -34,7 +34,7 @@ public class HttpClientConfig {
     }
 
     @Bean
-    final OpenWeatherMapWeatherApi openweatherWeatherClient() {
+    OpenWeatherMapWeatherApi openweatherWeatherClient() {
         OkHttpClient httpClient = new OkHttpClient.Builder().build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/")
