@@ -2,6 +2,11 @@ package com.weather.service.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/*
+    Configuration properties for api keys.
+ */
+
+
 @ConfigurationProperties("weather-api-keys")
 public class WeatherApiProperties {
     private final String yandex;
