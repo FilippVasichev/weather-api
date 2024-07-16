@@ -3,5 +3,5 @@ CREATE TABLE IF NOT EXISTS "weather" (
     city TEXT NOT NULL,
     country TEXT NOT NULL,
     temperature INTEGER NOT NULL,
-    date DATE
+    date TIMESTAMP NOT NULL
 );

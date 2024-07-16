@@ -17,7 +17,7 @@ import retrofit2.Response;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -95,30 +95,6 @@ public class WeatherService {
         }
     }
 
-    public ResponseEntity<String> getAverageWeatherForAllLocationsAndSaveToDB() throws IOException {
-        /* Get all cities from locationProperies
-        and make api calls for all cities, then saves it to db.*/
-        try {
-            Map<String, List<LocationProperties.City>> countries = locationProperties.getCountries();
-            for (Map.Entry<String, List<LocationProperties.City>> entry : countries.entrySet()) {
-                String country = entry.getKey();
-                List<LocationProperties.City> cities = entry.getValue();
-                for (LocationProperties.City city : cities) {
-                    int averageTemp = callApiAndGetAverageTemperature(city.lat(), city.lon());
-                    weatherStorage.insert(
-                            city.city(),
-                            country,
-                            averageTemp,
-                            Timestamp.from(OffsetDateTime.now().toInstant())
-                    );
-                }
-            }
-            return ResponseEntity.ok("Weather saved successfully.");
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().body("Failed to fetch weather data: " + e.getMessage());
-        }
-    }
-
     private int callApiAndGetAverageTemperature(double lat, double lon) throws IOException {
         /* Calls api and calculate avg temp. */
         int countOfApis = 3;
@@ -129,7 +105,40 @@ public class WeatherService {
         ) / countOfApis;
     }
 
-    public List<Weather> getAllWeather() throws IOException {
+    public ResponseEntity<String> getAverageWeatherForAllLocationsAndSaveToDB() {
+        /*
+        Get all cities from locationProperies
+        and make api calls for all cities and saves it to db.
+        */
+        try {
+            Map<String, List<LocationProperties.City>> countries = locationProperties.getCountries();
+            for (Map.Entry<String, List<LocationProperties.City>> entry : countries.entrySet()) {
+                String country = entry.getKey();
+                List<LocationProperties.City> cities = entry.getValue();
+                for (LocationProperties.City city : cities) {
+                    weatherStorage.insert(
+                            city.city(),
+                            country,
+                            callApiAndGetAverageTemperature(city.lat(), city.lon()),
+                            Timestamp.from(Instant.now())
+                    );
+                }
+            }
+            return ResponseEntity.ok("Weather saved successfully.");
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body("Failed to fetch weather data: " + e.getMessage());
+        }
+    }
+
+    public List<Weather> getAllWeather() {
         return weatherStorage.getAllWeather();
+    }
+
+    public Weather getCityWeatherByDate(String country, String city, Timestamp date) {
+        return weatherStorage.getCityWeatherByDate(country, city, date);
+    }
+
+    public Weather getCityWeatherWithoutDate(String country, String city) {
+        return weatherStorage.getCityWeatherWithoutDate(country, city);
     }
 }
