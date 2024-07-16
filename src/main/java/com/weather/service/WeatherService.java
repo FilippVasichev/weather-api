@@ -4,37 +4,58 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.weather.client.ApiNinjasWeatherApi;
 import com.weather.client.OpenWeatherMapWeatherApi;
 import com.weather.client.YandexWeatherApi;
-import com.weather.model.Weather;
+import com.weather.service.config.LocationProperties;
+import com.weather.service.config.WeatherApiProperties;
+import com.weather.storage.WeatherStorage;
+import com.weather.tables.pojos.Weather;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class WeatherService {
     private final YandexWeatherApi yandexWeatherApi;
     private final ApiNinjasWeatherApi apiNinjasWeatherApi;
     private final OpenWeatherMapWeatherApi openWeatherMapWeatherApi;
+    private final WeatherStorage weatherStorage;
+    private final WeatherApiProperties weatherApiProperties;
+    private final LocationProperties locationProperties;
+    private final Logger logger = LoggerFactory.getLogger(WeatherService.class);
 
     public WeatherService(
             YandexWeatherApi yandexWeatherApi,
             ApiNinjasWeatherApi apiNinjasWeatherApi,
-            OpenWeatherMapWeatherApi openWeatherMapWeatherApi
+            OpenWeatherMapWeatherApi openWeatherMapWeatherApi,
+            WeatherStorage weatherStorage,
+            WeatherApiProperties weatherApiProperties,
+            LocationProperties locationProperties
     ) {
         this.yandexWeatherApi = yandexWeatherApi;
         this.apiNinjasWeatherApi = apiNinjasWeatherApi;
         this.openWeatherMapWeatherApi = openWeatherMapWeatherApi;
+        this.weatherStorage = weatherStorage;
+        this.weatherApiProperties = weatherApiProperties;
+        this.locationProperties = locationProperties;
     }
 
-    public int getYandexWeatherTemp(double lat, double lon, String apiKey) throws IOException {
-        Call<JsonNode> call = yandexWeatherApi.getYandexWeather(lat, lon, apiKey);
+    public int getYandexWeatherTemp(double lat, double lon) throws IOException {
+        Call<JsonNode> call = yandexWeatherApi.getYandexWeather(lat, lon, weatherApiProperties.getYandexKey());
         Response<JsonNode> response = call.execute();
         if (response.isSuccessful()) {
             JsonNode json = response.body();
             if (json != null) {
                 return json.get("fact").get("temp").asInt();
             } else {
+                logger.warn("Error while fetching weather data from {}", call.request().url());
                 throw new IOException("Invalid JSON structure");
             }
         } else {
@@ -42,14 +63,15 @@ public class WeatherService {
         }
     }
 
-    public int getApiNinjasWeatherTemp(double lat, double lon, String apiKey) throws IOException {
-        Call<JsonNode> call = apiNinjasWeatherApi.getApiNinjasWeather(lat, lon, apiKey);
+    public int getApiNinjasWeatherTemp(double lat, double lon) throws IOException {
+        Call<JsonNode> call = apiNinjasWeatherApi.getApiNinjasWeather(lat, lon, weatherApiProperties.getApiNinjasKey());
         Response<JsonNode> response = call.execute();
         if (response.isSuccessful()) {
             JsonNode json = response.body();
             if (json != null) {
                 return json.get("temp").asInt();
             } else {
+                logger.warn("Error while fetching weather data from {}", call.request().url());
                 throw new IOException("Invalid JSON structure");
             }
         } else {
@@ -57,14 +79,15 @@ public class WeatherService {
         }
     }
 
-    public int getOpenweatherWeatherTemp(double lat, double lon, String apiKey) throws IOException {
-        Call<JsonNode> call = openWeatherMapWeatherApi.getOpenWeather(lat, lon, apiKey);
+    public int getOpenweatherWeatherTemp(double lat, double lon) throws IOException {
+        Call<JsonNode> call = openWeatherMapWeatherApi.getOpenWeather(lat, lon, weatherApiProperties.getOpenWeatherMap());
         Response<JsonNode> response = call.execute();
         if (response.isSuccessful()) {
             JsonNode json = response.body();
             if (json != null) {
                 return json.get("main").get("temp").asInt();
             } else {
+                logger.warn("Error while fetching weather data from {}", call.request().url());
                 throw new IOException("Invalid JSON structure");
             }
         } else {
@@ -72,7 +95,41 @@ public class WeatherService {
         }
     }
 
-    public Weather getAllWeather(double lat, double lon, String apiKey) throws IOException {
-        return null;
+    public ResponseEntity<String> getAverageWeatherForAllLocationsAndSaveToDB() throws IOException {
+        /* Get all cities from locationProperies
+        and make api calls for all cities, then saves it to db.*/
+        try {
+            Map<String, List<LocationProperties.City>> countries = locationProperties.getCountries();
+            for (Map.Entry<String, List<LocationProperties.City>> entry : countries.entrySet()) {
+                String country = entry.getKey();
+                List<LocationProperties.City> cities = entry.getValue();
+                for (LocationProperties.City city : cities) {
+                    int averageTemp = callApiAndGetAverageTemperature(city.lat(), city.lon());
+                    weatherStorage.insert(
+                            city.city(),
+                            country,
+                            averageTemp,
+                            Timestamp.from(OffsetDateTime.now().toInstant())
+                    );
+                }
+            }
+            return ResponseEntity.ok("Weather saved successfully.");
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body("Failed to fetch weather data: " + e.getMessage());
+        }
+    }
+
+    private int callApiAndGetAverageTemperature(double lat, double lon) throws IOException {
+        /* Calls api and calculate avg temp. */
+        int countOfApis = 3;
+        return (
+                getOpenweatherWeatherTemp(lat, lon) +
+                        getYandexWeatherTemp(lat, lon) +
+                        getApiNinjasWeatherTemp(lat, lon)
+        ) / countOfApis;
+    }
+
+    public List<Weather> getAllWeather() throws IOException {
+        return weatherStorage.getAllWeather();
     }
 }

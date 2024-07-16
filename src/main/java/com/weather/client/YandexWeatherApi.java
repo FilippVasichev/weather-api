@@ -7,7 +7,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Query;
 
 public interface YandexWeatherApi {
-    @GET("v2/informers")
+    @GET("v2/forecast")
     Call<JsonNode> getYandexWeather(
             @Query("lat") double latitude,
             @Query("lon") double longitude,
