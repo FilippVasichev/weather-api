@@ -9,14 +9,14 @@ import org.springframework.context.annotation.Configuration;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-/*
+/**
 Configuration class responsible for creating HTTP clients for each weather APIs.
 */
 
 @Configuration
 public class HttpClientConfig {
     @Bean
-    YandexWeatherApi yandexWeatherClient() {
+    public YandexWeatherApi yandexWeatherClient() {
         OkHttpClient httpClient = new OkHttpClient.Builder().build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.weather.yandex.ru/")
@@ -27,7 +27,7 @@ public class HttpClientConfig {
     }
 
     @Bean
-    ApiNinjasWeatherApi apiNinjasWeatherClient() {
+    public ApiNinjasWeatherApi apiNinjasWeatherClient() {
         OkHttpClient httpClient = new OkHttpClient.Builder().build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.api-ninjas.com/")
@@ -38,7 +38,7 @@ public class HttpClientConfig {
     }
 
     @Bean
-    OpenWeatherMapWeatherApi openweatherWeatherClient() {
+    public OpenWeatherMapWeatherApi openweatherWeatherClient() {
         OkHttpClient httpClient = new OkHttpClient.Builder().build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/")

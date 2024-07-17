@@ -7,7 +7,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Query;
 
 public interface YandexWeatherApi {
-    /*
+    /**
     Retrofit2 HTTP client configuration for making GET call to yandex weather.
      */
     @GET("v2/forecast")

@@ -2,8 +2,16 @@ package com.weather.service.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/*
-    Configuration properties for api keys.
+/**
+ * Configuration properties for API keys.
+ * <p>
+ * Example YAML structure:
+ * <pre>
+ * weather-api-keys:
+ *   yandex: key
+ *   apiNinjas: key
+ *   openweathermap: key
+ * </pre>
  */
 
 

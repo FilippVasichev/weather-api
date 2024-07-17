@@ -7,7 +7,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Query;
 
 public interface ApiNinjasWeatherApi {
-    /*
+    /**
     Retrofit2 HTTP client configuration for making GET call to api-ninjas.
      */
     @GET("v1/weather")
