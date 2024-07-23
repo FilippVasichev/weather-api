@@ -21,7 +21,7 @@ Temperature Information Service — это REST-сервис, предназна
 
 - **Spring Boot**: 3.3
 - **Java 21**
-- **База данных**: Postgresql
+- **База данных**: Postgresql + FlyWay + Jooq
 - **Публичные API погоды**: OpenWeatherMap, WeatherAPI, YandexWeather.
 
 ## Настройки приложения
