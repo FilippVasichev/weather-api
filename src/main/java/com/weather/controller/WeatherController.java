@@ -36,7 +36,7 @@ public class WeatherController {
             fixedDelayString = "${weather-api-settings.call-interval}"
     )
     public ResponseEntity<String> fetchWeatherBySchedule() {
-        log.info("There was an automatic weather fetch, time: {}", dateFormat.format(new Date()));
+        log.info("Automatic weather fetch, time: {}", dateFormat.format(new Date()));
         return weatherService.getAverageWeatherForAllLocationsAndSaveToDB();
     }
 

@@ -3,6 +3,7 @@ package com.weather.controller;
 import com.weather.AbstractComponentTest;
 import com.weather.tables.pojos.Weather;
 import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Disabled
 public class WeatherControllerTest extends AbstractComponentTest {
     /**
      * Makes real http call to weather APIs.

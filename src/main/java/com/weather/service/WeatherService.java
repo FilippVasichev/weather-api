@@ -105,11 +105,9 @@ public class WeatherService {
         ) / countOfApis;
     }
 
+
+    /** Get all cities from locationProperies and make api calls for all cities and saves it to db. */
     public ResponseEntity<String> getAverageWeatherForAllLocationsAndSaveToDB() {
-        /*
-        Get all cities from locationProperies
-        and make api calls for all cities and saves it to db.
-        */
         try {
             Map<String, List<LocationProperties.City>> countries = locationProperties.getCountries();
             for (Map.Entry<String, List<LocationProperties.City>> entry : countries.entrySet()) {
@@ -126,6 +124,7 @@ public class WeatherService {
             }
             return ResponseEntity.ok("Weather saved successfully.");
         } catch (IOException e) {
+            logger.warn("Automatic weather fetch failed. Error: {}. Please check API functionality manually or through tests.", e.getMessage());
             return ResponseEntity.internalServerError().body("Failed to fetch weather data: " + e.getMessage());
         }
     }
