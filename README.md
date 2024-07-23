@@ -67,7 +67,7 @@ weather-api-keys:
 
 3. **Соберите проект**:
     ```
-    ./gradlew clean build
+    ./gradlew clean build -x test
     ```
 
 4. **Создайте Docker-образ**:
