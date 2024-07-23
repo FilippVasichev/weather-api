@@ -2,19 +2,20 @@ spring:
   application:
     name: weather-api
   datasource:
-    url: jdbc:postgresql://localhost:5432/weather-api
-    username: weather-api-postgre
-    password: postgres
+    url: ${DB_HOST:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:qwert}
   flyway:
     enabled: true
-
-weather-api-settings:
-  call-intervall: 2m
 
 weather-api-keys:
   yandex: f0057952-d18a-4b1d-8297-196ffe3bbb1d
   apiNinjas: 56u+VueOl2xWO0OVU9DAyA==RXYkq4KsY6lgrLS1
   openweathermap: c130627d38f0379d3a442a311630dbe6
+
+weather-api-settings:
+  call-interval: 300000
+  initial-delay: 50000
 
 locations:
   countries:

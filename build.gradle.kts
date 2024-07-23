@@ -29,7 +29,6 @@ buildscript {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-jooq")
-//    implementation("org.springframework.boot:spring-boot-starter-scheduling")
     implementation("org.postgresql:postgresql:42.3.8")
     jooqGenerator("org.postgresql:postgresql:42.3.8")
     implementation("org.postgresql:postgresql")
@@ -58,52 +57,11 @@ val containerInstance: PostgreSQLContainer<Nothing> =
         waitingFor(Wait.forListeningPort())
         start()
     }
-//
-//flyway {
-//    url = "jdbc:postgresql://localhost:5432/weather-api"
-//    user = "weather-api-postgre"
-//    password = "postgres"
-//}
-//
-//jooq {
-//    edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)
-//    configurations {
-//        create("main") {
-//            jooqConfiguration.apply {
-//                jdbc.apply {
-//                    driver = "org.postgresql.Driver"
-//                    url = "jdbc:postgresql://localhost:5432/weather-api"
-//                    user = "weather-api-postgre"
-//                    password = "postgres"
-//                }
-//                generator.apply {
-//                    name = "org.jooq.codegen.DefaultGenerator"
-//                    database.apply {
-//                        name = "org.jooq.meta.postgres.PostgresDatabase"
-//                        inputSchema = "public"
-//                        isIncludeIndexes = false
-//                        excludes = "flyway.*"
-//                    }
-//                    generate.apply {
-//                        isPojos = true
-//                        isDaos = true
-//                        isTables = true
-//                    }
-//                    target.apply {
-//                        packageName = "com.weather"
-//                        directory = "src/main/jook"
-//                    }
-//                    strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
-//                }
-//            }
-//        }
-//    }
-//}
 
 flyway {
-    url = containerInstance.jdbcUrl
-    user = containerInstance.username
-    password = containerInstance.password
+    url = "jdbc:postgresql://localhost:5432/weather-api"
+    user = "weather-api-postgre"
+    password = "postgres"
 }
 
 jooq {
@@ -113,9 +71,9 @@ jooq {
             jooqConfiguration.apply {
                 jdbc.apply {
                     driver = "org.postgresql.Driver"
-                    url = containerInstance.jdbcUrl
-                    user = containerInstance.username
-                    password = containerInstance.password
+                    url = "jdbc:postgresql://localhost:5432/weather-api"
+                    user = "weather-api-postgre"
+                    password = "postgres"
                 }
                 generator.apply {
                     name = "org.jooq.codegen.DefaultGenerator"
@@ -140,6 +98,47 @@ jooq {
         }
     }
 }
+//
+//flyway {
+//    url = containerInstance.jdbcUrl
+//    user = containerInstance.username
+//    password = containerInstance.password
+//}
+//
+//jooq {
+//    edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)
+//    configurations {
+//        create("main") {
+//            jooqConfiguration.apply {
+//                jdbc.apply {
+//                    driver = "org.postgresql.Driver"
+//                    url = containerInstance.jdbcUrl
+//                    user = containerInstance.username
+//                    password = containerInstance.password
+//                }
+//                generator.apply {
+//                    name = "org.jooq.codegen.DefaultGenerator"
+//                    database.apply {
+//                        name = "org.jooq.meta.postgres.PostgresDatabase"
+//                        inputSchema = "public"
+//                        isIncludeIndexes = false
+//                        excludes = "flyway.*"
+//                    }
+//                    generate.apply {
+//                        isPojos = true
+//                        isDaos = true
+//                        isTables = true
+//                    }
+//                    target.apply {
+//                        packageName = "com.weather"
+//                        directory = "src/main/jook"
+//                    }
+//                    strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
+//                }
+//            }
+//        }
+//    }
+//}
 
 
 tasks.named("generateJooq").configure {
