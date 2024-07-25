@@ -108,14 +108,14 @@ weather-api-keys:
 
 **Endpoint**: `/manually_fetch_weather`
 
-**Метод**: `GET`
+**Метод**: `POST`
 
 **Описание**: Запускает запрос погоды для всех городов из настроек и сохраняет результаты в базу данных.
 
 **Пример запроса**:
 
 ```
-curl -X GET http://localhost:8080/api/v1/weather/manually_fetch_weather
+curl -X POST http://localhost:8080/api/v1/weather/manually_fetch_weather
 ```
 
 **Ответ:**
@@ -166,7 +166,7 @@ curl -X GET "http://localhost:8080/api/v1/weather/get?country=Russia&city=Moscow
 
 ### 3. Получение всех записей о погоде
 
-**Endpoint**: `/get/all`
+**Endpoint**: `/all`
 
 **Метод**: `GET`
 
@@ -176,7 +176,7 @@ curl -X GET "http://localhost:8080/api/v1/weather/get?country=Russia&city=Moscow
 **Пример запроса**:
 
 ```bash
-curl -X GET http://localhost:8080/api/v1/weather/get/all
+curl -X GET http://localhost:8080/api/v1/weather/all
 ```
 
 **Ответ:**

@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,12 +41,12 @@ public class WeatherController {
         return weatherService.getAverageWeatherForAllLocationsAndSaveToDB();
     }
 
-    @GetMapping("/manually_fetch_weather")
+    @PostMapping("/manually_fetch_weather")
     public ResponseEntity<String> fetchAllWeather() {
         return weatherService.getAverageWeatherForAllLocationsAndSaveToDB();
     }
 
-    @GetMapping("/get")
+    @GetMapping()
     public ResponseEntity<Weather> getWeather(
             @RequestParam String country,
             @RequestParam String city,
@@ -65,7 +66,7 @@ public class WeatherController {
         }
     }
 
-    @GetMapping("/get/all")
+    @GetMapping("/all")
     public List<Weather> getAllWeather() {
         return weatherService.getAllWeather();
     }
